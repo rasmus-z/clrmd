@@ -37,9 +37,9 @@ namespace Microsoft.Diagnostics.Runtime.Implementation
                 string location = split[split.Length - 1];
 
                 string? cache = null;
-                if (split.Length > 1)
+                if (split.Length > 2)
                 {
-                    cache = split[split.Length - 1];
+                    cache = split[split.Length - 2];
 
                     if (cache.Equals("cache", StringComparison.OrdinalIgnoreCase))
                     {
@@ -277,8 +277,7 @@ namespace Microsoft.Diagnostics.Runtime.Implementation
                 bool found = true;
                 if (checkProperties)
                 {
-                    using FileStream fs = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    using PEImage img = new PEImage(fs);
+                    using PEImage img = new PEImage(File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
                     unchecked
                     {
                         found = img.IndexFileSize == imageSize && img.IndexTimeStamp == buildTimeStamp;
